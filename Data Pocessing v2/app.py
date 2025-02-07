@@ -12,6 +12,10 @@ import os
 with open("model.pkl", "rb") as f:
     model = pickle.load(f)
 
+# Path to the example files (Ensure these exist in your project directory)
+EXAMPLE_DAT_FILE = "a01.dat"
+EXAMPLE_HEA_FILE = "a01.hea"
+
 def extract_features(dat_file, hea_file):
     """Extract features from an uploaded ECG file (.dat + .hea) for apnea detection."""
 
@@ -21,7 +25,8 @@ def extract_features(dat_file, hea_file):
 
         # Save `.hea` file first to extract the expected filename
         with open(temp_hea_path, "wb") as f:
-            f.write(hea_file.getvalue())
+            f.write(hea_file.getvalue() if isinstance(hea_file, st.runtime.uploaded_file_manager.UploadedFile) 
+                    else open(hea_file, "rb").read())
 
         # Read the expected filename from the first line of `.hea`
         with open(temp_hea_path, "r") as f:
@@ -35,7 +40,8 @@ def extract_features(dat_file, hea_file):
         # Save `.dat` file with the correct name
         dat_path = os.path.join(temp_dir, expected_filename + ".dat")
         with open(dat_path, "wb") as f:
-            f.write(dat_file.getvalue())
+            f.write(dat_file.getvalue() if isinstance(dat_file, st.runtime.uploaded_file_manager.UploadedFile) 
+                    else open(dat_file, "rb").read())
 
         # Read WFDB record from saved files
         record = wfdb.rdrecord(os.path.join(temp_dir, expected_filename))
@@ -91,13 +97,21 @@ def extract_features(dat_file, hea_file):
 
     return features_cleaned, signal_clean, sampling_rate, valid_indices
 
+
 # Streamlit UI
 st.title("ECG-Based Apnea Detection")
-st.write("Upload both the **.dat** (ECG signal) and **.hea** (metadata) files.")
+st.write("Upload both the **.dat** (ECG signal) and **.hea** (metadata) files or use an example file.")
 
 # Upload `.dat` and `.hea` files
 dat_file = st.file_uploader("Upload ECG signal file (.dat)", type=["dat"])
 hea_file = st.file_uploader("Upload metadata header file (.hea)", type=["hea"])
+
+# Button to use the example file
+use_example = st.button("Use Example File")
+
+# If the user clicks the example file button, load the preset files
+if use_example:
+    dat_file, hea_file = EXAMPLE_DAT_FILE, EXAMPLE_HEA_FILE
 
 if dat_file and hea_file:
     try:
