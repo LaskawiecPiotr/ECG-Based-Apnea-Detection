@@ -107,28 +107,48 @@ if dat_file and hea_file:
         if features.size == 0:
             st.error("No valid ECG features extracted. Check your input data.")
         else:
-            prediction = np.mean(model.predict(features))
-            label = "You exhibit signs of Sleep Apnea" if prediction > 0.1 else "No Apnea"
+            predictions = model.predict(features)
+            AHI=np.sum(predictions)/(len(predictions)/60)
+            label = ("You exhibit signs of mild Sleep Apnea" if 5 <= AHI <= 15 else
+                    "You exhibit signs of moderate Sleep Apnea" if 15 < AHI <= 30 else
+                    "You exhibit signs of severe Sleep Apnea" if AHI > 30 else
+                    "You exhibit no signs of Sleep Apnea")
 
             st.subheader("Prediction Result")
-            st.write(f"**{label}** (Predicted by ML Model, Confidence: {prediction:.2f})")
-
+            st.write(f"**{label}** (You have an AHI of {AHI:.2f})")
+            apnea_indices = np.where(predictions == 1)[0]
+            non_apnea_indices = np.where(predictions == 0)[0]
             # Small 120s Window with Apnea (if available)
-            if prediction>0.1:
+            if apnea_indices.size > 0:
                 st.subheader("Apnea Event - 120s Window")
-                
-                # Select the first detected apnea segment
+                time = 60 * sampling_rate * apnea_indices[0]  # First detected apnea segment
                 time_window = np.arange(0, 120, 1 / sampling_rate)
 
                 fig, ax = plt.subplots(figsize=(10, 4))
-                ax.plot(time_window, signal[6000:18000], color="red", label="Apnea Segment")
+                ax.plot(time_window, signal[time - 6000:time + 6000], color="red", label="Apnea Segment")
                 ax.set_xlabel("Time (s)")
                 ax.set_ylabel("ECG Amplitude")
                 ax.set_title("120s Window with Apnea")
                 ax.legend()
                 st.pyplot(fig)
-            else:
-                st.write("No significant apnea segments detected.")
+
+            # Small 120s Window without Apnea for Comparison
+            if non_apnea_indices.size > 0:
+                st.subheader("Non-Apnea Event - 120s Window")
+                time_non_apnea = 60 * sampling_rate * non_apnea_indices[0]  # First detected non-apnea segment
+                time_window = np.arange(0, 120, 1 / sampling_rate)
+
+                fig2, ax2 = plt.subplots(figsize=(10, 4))
+                ax2.plot(time_window, signal[time - 6000:time + 6000], color="blue",
+                         label="Non-Apnea Segment")
+                ax2.set_xlabel("Time (s)")
+                ax2.set_ylabel("ECG Amplitude")
+                ax2.set_title("120s Window without Apnea")
+                ax2.legend()
+                st.pyplot(fig2)
+
+            if apnea_indices.size == 0 and non_apnea_indices.size == 0:
+                st.write("No apnea or non-apnea events detected.")
 
     except Exception as e:
         st.error(f"Error processing file: {e}")
