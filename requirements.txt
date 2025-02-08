@@ -3,7 +3,6 @@ numpy
 pandas
 wfdb
 neurokit2 
-pickle
 matplotlib.pyplot
 tempfile
 os
