@@ -6,4 +6,3 @@ os
 xgboost
 git+https://github.com/LaskawiecPiotr/neurokit.git@master
 matplotlib
-xgboost
