@@ -3,7 +3,7 @@ numpy
 pandas
 wfdb
 neurokit2 
-matplotlib.pyplot
+matplotlib
 tempfile
 os
 xgboost
