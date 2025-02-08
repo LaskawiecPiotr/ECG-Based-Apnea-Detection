@@ -15,17 +15,17 @@ with open("model.pkl", "rb") as f:
 import shutil  # For cleaning up the directory later
 
 
-def load_signal(dat_file, hea_file, use_example=False):
+def load_signal(dat_file=None, hea_file=None, example_name=None):
     """Load and return the ECG signal and sampling rate."""
-    if use_example:
-        record = wfdb.rdrecord("a01")
+    if example_name:  # Use example file if example_name is provided
+        record = wfdb.rdrecord(example_name)
         sampling_rate = record.fs
-        random_end=np.random.randint(len(signal)*0.1,high=len(signal),size=1)[0]
-        signal = record.p_signal.flatten()[random_end-int(len(signal)*0.1):random_end]
+        signal = record.p_signal.flatten()
+        random_end = np.random.randint(len(signal) * 0.1, high=len(signal), size=1)[0]
+        signal = signal[random_end - int(len(signal) * 0.1):random_end]
     else:
-        temp_dir = tempfile.mkdtemp()  # Create a persistent temporary directory
+        temp_dir = tempfile.mkdtemp()
 
-        # Save the uploaded .hea and .dat files
         temp_hea_path = os.path.join(temp_dir, "temp.hea")
         temp_dat_path = os.path.join(temp_dir, "temp.dat")
 
@@ -34,24 +34,18 @@ def load_signal(dat_file, hea_file, use_example=False):
         with open(temp_dat_path, "wb") as f:
             f.write(dat_file.getvalue())
 
-        # Read the first line of the .hea file to get the expected base name
         with open(temp_hea_path, "r") as f:
             first_line = f.readline().strip().split()
-            expected_base_name = first_line[0]  # The actual base name (e.g., 'a09')
+            expected_base_name = first_line[0]
 
-        # Rename the temp files to match the expected base name
         final_hea_path = os.path.join(temp_dir, f"{expected_base_name}.hea")
         final_dat_path = os.path.join(temp_dir, f"{expected_base_name}.dat")
         os.rename(temp_hea_path, final_hea_path)
         os.rename(temp_dat_path, final_dat_path)
 
-        # Read the WFDB record using the actual base name
         record = wfdb.rdrecord(os.path.join(temp_dir, expected_base_name))
         sampling_rate = record.fs
         signal = record.p_signal.flatten()
-
-        # Clean up the temporary directory (optional, for now keep it persistent for debugging)
-        # shutil.rmtree(temp_dir)
 
     return signal, sampling_rate
 
@@ -59,7 +53,7 @@ def load_signal(dat_file, hea_file, use_example=False):
 def extract_features(signal, sampling_rate):
     """Extract features from 120-second overlapping windows with 60-second steps."""
     df = pd.DataFrame()
-    valid_indices = []  # Store the start time (in seconds) of each valid 120s window
+    valid_times = []  # Store the start time (in seconds) of each valid 120s window
     length_of_signal = len(signal) // sampling_rate
 
     # Sliding window: step size is 60 seconds, window size is 120 seconds
@@ -71,12 +65,12 @@ def extract_features(signal, sampling_rate):
 
             # Check signal quality
             quality = np.mean(nk.ecg_quality(clean_segment, sampling_rate=sampling_rate))
-            if quality >= 0.5:
+            if quality >= 0.7:
                 # Extract features from clean ECG segment
                 peaks = nk.ecg_peaks(clean_segment, sampling_rate=sampling_rate)
                 features = nk.hrv(peaks[0], sampling_rate=sampling_rate)
                 df = pd.concat([df, features])
-                valid_indices.append(start_time + 60)  # Middle of the 120s window
+                valid_times.append(start_time + 60)  # Middle of the 120s window
         except Exception as e:
             print(f"Error processing window starting at {start_time}s: {e}")
 
@@ -87,32 +81,47 @@ def extract_features(signal, sampling_rate):
     nan_rows = np.isnan(clean_features).any(axis=1)
     features_cleaned = clean_features[~nan_rows]
 
-    return features_cleaned, valid_indices
+    return features_cleaned, valid_times
 
 # Initialize session state for signal and sampling rate
 if "signal" not in st.session_state:
     st.session_state.signal = None
     st.session_state.sampling_rate = None
-
+if "example_used" not in st.session_state:
+    st.session_state.example_used = None 
 # Streamlit UI
 st.title("ECG-Based Apnea Detection with AHI Calculation")
 st.write("Upload both the **.dat** (ECG signal) and **.hea** (metadata) files or use an example file.")
 
-# Upload `.dat` and `.hea` files
+# File upload
 dat_file = st.file_uploader("Upload ECG signal file (.dat)", type=["dat"])
 hea_file = st.file_uploader("Upload metadata header file (.hea)", type=["hea"])
-use_example = st.button("Use Example File")
-if use_example:
-    st.session_state.signal, st.session_state.sampling_rate = load_signal(None, None, use_example=True)
-elif dat_file is not None and hea_file is not None:
-    st.session_state.signal, st.session_state.sampling_rate = load_signal(dat_file, hea_file)
+st.write("You may also analyze small random parts of example ECG with different severites of Apnea:")
+col1, col2, col3, col4 = st.columns(4, gap="large")
+if st.button("No Apnea", use_container_width=True):
+    st.session_state.signal, st.session_state.sampling_rate = load_signal(example_name="c06")
+    st.session_state.example_used = True
+
+if st.button("Mild Apnea", use_container_width=True):
+    st.session_state.signal, st.session_state.sampling_rate = load_signal(example_name="x10")
+    st.session_state.example_used = True
+
+if st.button("Moderate Apnea", use_container_width=True):
+    st.session_state.signal, st.session_state.sampling_rate = load_signal(example_name="a10")
+    st.session_state.example_used = True
+
+if st.button("Severe Apnea", use_container_width=True):
+    st.session_state.signal, st.session_state.sampling_rate = load_signal(example_name="a01")
+    st.session_state.example_used = True
+if dat_file is not None and hea_file is not None:
+    st.session_state.signal, st.session_state.sampling_rate = load_signal(dat_file=dat_file, hea_file=hea_file)
 
 if st.session_state.signal is not None:
     signal = st.session_state.signal
     sampling_rate = st.session_state.sampling_rate
 
     # Extract features and make predictions
-    features, valid_indices = extract_features(signal, sampling_rate)
+    features, valid_times = extract_features(signal, sampling_rate)
     if features.size == 0:
         st.error("No valid ECG features extracted.")
     else:
@@ -140,16 +149,22 @@ if st.session_state.signal is not None:
             severity = "Severe Sleep Apnea"
 
         st.subheader("Prediction Result")
-        st.write(f"**{severity}** (AHI: {AHI:.2f} events/hour)")
+        if st.session_state.example_used:  
+            st.write(f"**{severity}** with an AHI of {AHI:.2f} events/hour.")
+            st.write(
+                "**Note:** This prediction is based on a random 10% of the signal from the selected example file. "
+                "The prediction may not fully represent the overall severity of the example."
+            )
+        else:
+            st.write(f"**{severity}** (AHI: {AHI:.2f} events/hour)")
 
         # Find indices for apnea and non-apnea windows
-        apnea_indices = [valid_indices[i] for i in np.where(predictions == 1)[0]]
-        non_apnea_indices = [valid_indices[i] for i in np.where(predictions == 0)[0]]
-
+        apnea_indices = [valid_times[i] for i in np.where(predictions == 1)[0]]
+        non_apnea_indices = [valid_times[i] for i in np.where(predictions == 0)[0]]
         # Plot one apnea window (if available)
         if apnea_indices:
             st.subheader("Apnea Event - 120s Window")
-            time_apnea = int(valid_indices[0] * sampling_rate)
+            time_apnea = int(np.random.choice(apnea_indices) *sampling_rate)
             end_idx = min(time_apnea + 120 * sampling_rate, len(signal))  # Ensure end index is within bounds
 
             if time_apnea < len(signal) and (end_idx - time_apnea) > 0:
@@ -165,11 +180,14 @@ if st.session_state.signal is not None:
                 st.pyplot(fig1)
             else:
                 st.warning("Apnea window is out of bounds or too short to display.")
+        else:
+            st.subheader("Apnea Event - 120s Window")
+            st.info("No Apnea events were detected in the analyzed signal.")
 
         # Plot one non-apnea window (if available)
         if non_apnea_indices:
             st.subheader("Non-Apnea Event - 120s Window")
-            time_non_apnea = 120 * sampling_rate * non_apnea_indices[0]
+            time_non_apnea = int(np.random.choice(non_apnea_indices)* sampling_rate)
             time_window = np.arange(0, 120, 1 / sampling_rate)
             fig2, ax2 = plt.subplots(figsize=(10, 4))
             ax2.plot(time_window, signal[time_non_apnea:time_non_apnea + 120 * sampling_rate], color="green", label="Non-Apnea Segment")
@@ -178,5 +196,8 @@ if st.session_state.signal is not None:
             ax2.set_title("120s Window without Apnea")
             ax2.legend()
             st.pyplot(fig2)
+        else:
+            st.subheader("Non-Apnea Event - 120s Window")
+            st.info("No Non-Apnea events were detected in the analyzed signal.")
 else:
     st.warning("Please upload both the .dat and .hea files or use the example file.")
