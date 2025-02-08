@@ -2,6 +2,8 @@ streamlit
 numpy
 pandas
 wfdb
-neurokit2 
+os
+xgboost
+git+https://github.com/LaskawiecPiotr/neurokit.git@master
 matplotlib
 xgboost
