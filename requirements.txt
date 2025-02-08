@@ -4,6 +4,4 @@ pandas
 wfdb
 neurokit2 
 matplotlib
-tempfile
-os
 xgboost
