@@ -21,7 +21,8 @@ def load_signal(dat_file, hea_file, use_example=False):
         record = wfdb.rdrecord("a01")
         sampling_rate = record.fs
         random_end=np.random.randint(len(signal)*0.1,high=len(signal),size=1)[0]
-        signal = record.p_signal.flatten()[random_end-int(len(signal)*0.1):random_end]
+        signal = record.p_signal.flatten()
+        signal=signal[random_end-int(len(signal)*0.1):random_end]
     else:
         temp_dir = tempfile.mkdtemp()  # Create a persistent temporary directory
 
