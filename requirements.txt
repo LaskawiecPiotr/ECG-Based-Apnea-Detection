@@ -2,6 +2,9 @@ streamlit
 numpy
 pandas
 wfdb
-neurokit2
-matplotlib
-scikit-learn
+neurokit2 
+pickle
+matplotlib.pyplot
+tempfile
+os
+xgboost
