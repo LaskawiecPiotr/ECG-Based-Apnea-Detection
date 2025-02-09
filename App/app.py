@@ -18,7 +18,7 @@ import shutil  # For cleaning up the directory later
 def load_signal(dat_file=None, hea_file=None, example_name=None):
     """Load and return the ECG signal and sampling rate."""
     if example_name:  # Use example file if example_name is provided
-        record = wfdb.rdrecord(example_name)
+        record = wfdb.rdrecord(fr"Examples Files/{example_name}")
         sampling_rate = record.fs
         signal = record.p_signal.flatten()
         random_end = np.random.randint(len(signal) * 0.1, high=len(signal), size=1)[0]
