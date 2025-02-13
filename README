@@ -1,16 +1,2 @@
 #ECG Informed Sleep Apnea Detection 
 
-
-@article{BERNARDINI2021102133,
-title = {AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning},
-journal = {Artificial Intelligence in Medicine},
-volume = {118},
-pages = {102133},
-year = {2021},
-issn = {0933-3657},
-doi = {https://doi.org/10.1016/j.artmed.2021.102133},
-url = {https://www.sciencedirect.com/science/article/pii/S0933365721001263},
-author = {Andrea Bernardini and Andrea Brunello and Gian Luigi Gigli and Angelo Montanari and Nicola Saccomanno},
-keywords = {AI for healthcare, Convolutional neural networks, Deep learning, Obstructive sleep apnea, Time-series},
-abstract = {Obstructive Sleep Apnea Syndrome (OSAS) is the most common sleep-related breathing disorder. It is caused by an increased upper airway resistance during sleep, which determines episodes of partial or complete interruption of airflow. The detection and treatment of OSAS is particularly important in patients who suffered a stroke, because the presence of severe OSAS is associated with higher mortality, worse neurological deficits, worse functional outcome after rehabilitation, and a higher likelihood of uncontrolled hypertension. The gold standard test for diagnosing OSAS is polysomnography (PSG). Unfortunately, performing a PSG in an electrically hostile environment, like a stroke unit, on neurologically impaired patients is a difficult task; moreover, the number of strokes per day vastly outnumbers the availability of polysomnographs and dedicated healthcare professionals. Hence, a simple and automated recognition system to identify OSAS cases among acute stroke patients, relying on routinely recorded vital signs, is highly desirable. The vast majority of the work done so far focuses on data recorded in ideal conditions and highly selected patients, and thus it is hardly exploitable in real-life circumstances, where it would be of actual use. In this paper, we propose a novel convolutional deep learning architecture able to effectively reduce the temporal resolution of raw waveform data, like physiological signals, extracting key features that can be used for further processing. We exploit models based on such an architecture to detect OSAS events in stroke unit recordings obtained from the monitoring of unselected patients. Unlike existing approaches, annotations are performed at one-second granularity, allowing physicians to better interpret the model outcome. Results are considered to be satisfactory by the domain experts. Moreover, through tests run on a widely-used public OSAS dataset, we show that the proposed approach outperforms current state-of-the-art solutions.}
-}
