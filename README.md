@@ -1,10 +1,7 @@
 # Replication of Apnea Detection Methods from arXiv:2302.05179v1
 
 ## Overview
-This repository replicates the methods described in the paper "Title of Paper" (arXiv:2302.05179v1) for experimental and educational purposes.
-We follow the methodology outlined by the authors and use the Apnea-ECG Dataset, which was also employed in the original study.
-
-We replicate the methods described in the paper **["AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning"](https://arxiv.org/abs/2302.05179)** for experimental and educational purposes.
+This repository replicates the methods in the paper **["AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning"](https://arxiv.org/abs/2302.05179)** for experimental and educational purposes. We follow the methodology outlined by the authors and use the **[Apnea-ECG dataset](https://www.physionet.org/content/apnea-ecg/)**, which was also employed in the original study.
 
 ### Citation
 > Bernardini, Andrea, Andrea Brunello, Gian Luigi Gigli, Angelo Montanari, and Nicola Saccomanno.  
