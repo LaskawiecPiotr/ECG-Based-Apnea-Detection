@@ -1,4 +1,4 @@
-# Replication of Apnea Detection Methods from arXiv:2302.05179v1
+# Apnea Detection web application
 
 ## Overview
 This repository replicates the methods in the paper **["AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning"](https://pubmed.ncbi.nlm.nih.gov/34412849/)** for experimental and educational purposes. We follow the methodology outlined by the authors and use the **[Apnea-ECG dataset](https://www.physionet.org/content/apnea-ecg/)**, which was also employed in the original study.
