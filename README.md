@@ -16,7 +16,7 @@ To create a practical application for real-time ECG analysis.
 
 ## Dataset
 
-We use the Apnea-ECG dataset, which contains electrocardiogram (ECG) recordings for sleep apnea detection. For details on how to access and use this dataset, please refer to the official dataset documentation: Apnea-ECG Database.
+We use the **[Apnea-ECG dataset](https://www.physionet.org/content/apnea-ecg/)**, which contains electrocardiogram (ECG) recordings for sleep apnea detection. For details on how to access and use this dataset, please refer to the official dataset documentation.
 
 
 ## Implementation
