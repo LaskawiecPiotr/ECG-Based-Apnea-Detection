@@ -1,14 +1,7 @@
 # Replication of Apnea Detection Methods from arXiv:2302.05179v1
 
 ## Overview
-This repository replicates the methods in the paper **["AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning"](https://arxiv.org/abs/2302.05179)** for experimental and educational purposes. We follow the methodology outlined by the authors and use the **[Apnea-ECG dataset](https://www.physionet.org/content/apnea-ecg/)**, which was also employed in the original study.
-
-### Citation
-> Bernardini, Andrea, Andrea Brunello, Gian Luigi Gigli, Angelo Montanari, and Nicola Saccomanno.  
-> *AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning*.  
-> Artificial Intelligence in Medicine 118 (2021): 102133.  
-> DOI: [10.1016/j.artmed.2021.102133](https://doi.org/10.1016/j.artmed.2021.102133)
-
+This repository replicates the methods in the paper **["AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning"](https://pubmed.ncbi.nlm.nih.gov/34412849/)** for experimental and educational purposes. We follow the methodology outlined by the authors and use the **[Apnea-ECG dataset](https://www.physionet.org/content/apnea-ecg/)**, which was also employed in the original study.
 As part of this project, we also launched a web-based application that allows users to upload their own ECG signals and receive sleep apnea detection predictions using the models we implemented.
 
 ## Purpose
@@ -52,3 +45,8 @@ We acknowledge the authors of the original paper for their contribution to the f
 ## Disclaimer
 
 This project is for educational purposes only. It is not intended for clinical or diagnostic use.
+## Citation
+> Bernardini, Andrea, Andrea Brunello, Gian Luigi Gigli, Angelo Montanari, and Nicola Saccomanno.  
+> *AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning*.  
+> Artificial Intelligence in Medicine 118 (2021): 102133.  
+> DOI: [10.1016/j.artmed.2021.102133](https://doi.org/10.1016/j.artmed.2021.102133)
