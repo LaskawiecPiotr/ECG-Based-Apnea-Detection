@@ -4,6 +4,14 @@
 This repository replicates the methods described in the paper "Title of Paper" (arXiv:2302.05179v1) for experimental and educational purposes.
 We follow the methodology outlined by the authors and use the Apnea-ECG Dataset, which was also employed in the original study.
 
+We replicate the methods described in the paper **["AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning"](https://arxiv.org/abs/2302.05179)** for experimental and educational purposes.
+
+### Citation
+> Bernardini, Andrea, Andrea Brunello, Gian Luigi Gigli, Angelo Montanari, and Nicola Saccomanno.  
+> *AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning*.  
+> Artificial Intelligence in Medicine 118 (2021): 102133.  
+> DOI: [10.1016/j.artmed.2021.102133](https://doi.org/10.1016/j.artmed.2021.102133)
+
 As part of this project, we also launched a web-based application that allows users to upload their own ECG signals and receive sleep apnea detection predictions using the models we implemented.
 
 ## Purpose
