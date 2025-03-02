@@ -18,17 +18,6 @@ To create a practical application for real-time ECG analysis.
 We use the **[Apnea-ECG dataset](https://www.physionet.org/content/apnea-ecg/)**, which contains electrocardiogram (ECG) recordings for sleep apnea detection. For details on how to access and use this dataset, please refer to the official dataset documentation.
 
 
-## Implementation
-
-The implementation follows the steps outlined in the paper, including:
-
-Data Preprocessing: Preparing the ECG signals for training and testing.
-Feature Extraction: Extracting features as described by the authors.
-Modeling and Classification: Building and training the models to detect sleep apnea events.
-
-## Tools and Libraries
-
-
 ## Web Application
 
 The web application allows users to upload their ECG recordings and obtain predictions in real time.
