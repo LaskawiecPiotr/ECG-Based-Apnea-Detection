@@ -1,7 +1,12 @@
 # Apnea Detection Web Application
 
 ## Overview
-
+This repository contains code for processing ECG signals for apnea detection. The project focuses on:
+- Preprocessing ECG signals (from the Apnea ECG dataset on PhysioNet)
+- Extracting Heart Rate Variability (HRV) features using NeuroKit2
+- Performing model selection and hyperparameter tuning using various classifiers
+- Reducing features based on model-based importance
+- Evaluating the final model with multiple performance metrics
 
 ## Purpose
 
