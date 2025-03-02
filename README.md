@@ -25,11 +25,24 @@ Visit the website here: **[ECG Based Apnea Detection](https://ecg-based-apnea-de
 The uploaded data is processed using the same methodology described in the paper, and the results are displayed in an easy-to-understand format.
 
 ## Results
+Oout of 65 computed features, only 7 were needed to achieve near best accuracy possible (with our methods). The 7 best features are:
+1) Total Power
+2) Short-term variance of contributions of accelerations
+3) The 80th percentile of the RR intervals
+4) Percentage of short segments
+5) The percentage of absolute differences in successive RR intervals greater than 20 ms
+6) Higuchi’s Fractal Dimension
+7) The median absolute deviation of the RR intervals divided by the median of the RR intervals
 
-
-
-## Acknowledgments
-We draw inspiration from **["AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning"](https://pubmed.ncbi.nlm.nih.gov/34412849/)**. 
+The classification report is as follows:
+| Class           | Precision | Recall | F1-score | Support |
+|-----------------|-----------|--------|----------|---------|
+| 0               | 0.83      | 0.89   | 0.86     | 10286   |
+| 1               | 0.80      | 0.71   | 0.75     | 6272    |
+| **Accuracy**    |           |        | **0.82** | 16558   |
+| **Macro Avg**   | 0.82      | 0.80   | 0.81     | 16558   |
+| **Weighted Avg**| 0.82      | 0.82   | 0.82     | 16558   |
+The model has accuracy of 82% with only 7 features and has AUC of 0.895. 
 
 
 ## Disclaimer
