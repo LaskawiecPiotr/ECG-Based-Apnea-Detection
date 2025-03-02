@@ -46,4 +46,7 @@ The final model achieves an accuracy of 82% and an AUC of 0.895 using only 7 fea
 This project is for educational purposes only and is not intended for clinical or diagnostic use.
 
 ## Citation
-> Bernardini, Andrea, Andrea Brunello, Gian Luigi Gigli,
+> Bernardini, Andrea, Andrea Brunello, Gian Luigi Gigli, Angelo Montanari, and Nicola Saccomanno.  
+> *AIOSA: An approach to the automatic identification of obstructive sleep apnea events based on deep learning*.  
+> Artificial Intelligence in Medicine 118 (2021): 102133.  
+> DOI: [10.1016/j.artmed.2021.102133](https://doi.org/10.1016/j.artmed.2021.102133)
