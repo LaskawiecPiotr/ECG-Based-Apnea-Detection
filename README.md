@@ -1,4 +1,4 @@
-# Apnea Detection Web Application
+# Apnea Detection
 
 ## Overview
 This repository contains code for processing ECG signals for sleep apnea detection. The project focuses on:
