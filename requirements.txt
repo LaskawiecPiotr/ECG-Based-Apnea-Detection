@@ -1,0 +1,10 @@
+wfdb
+mne
+numpy
+pandas
+matplotlib
+scikit-learn
+mne-features
+git+https://github.com/LaskawiecPiotr/neurokit.git@master
+imbalanced-learn
+xgboost
